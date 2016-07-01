@@ -35,6 +35,7 @@ module VaultCookbook
       attribute(:tls_disable, equal_to: [true, false, 1, 0, 'yes', 'no'], default: true)
       attribute(:tls_cert_file, kind_of: String)
       attribute(:tls_key_file, kind_of: String)
+      attribute(:tls_min_version, kind_of: String)
       attribute(:disable_mlock, equal_to: [true, false], default: false)
       attribute(:default_lease_ttl, kind_of: String)
       attribute(:max_lease_ttl, kind_of: String)
@@ -64,7 +65,7 @@ module VaultCookbook
           config_keeps.include?(k.to_sym)
         end
         # listener
-        listener_keeps = tls? ? %i{address tls_cert_file tls_key_file} : %i{address}
+        listener_keeps = tls? ? %i{address tls_cert_file tls_key_file tls_min_version} : %i{address}
         listener_options = to_hash.keep_if do |k, _|
           listener_keeps.include?(k.to_sym)
         end.merge(tls_disable: tls_disable.to_s)
